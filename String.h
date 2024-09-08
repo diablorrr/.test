@@ -1,9 +1,12 @@
 #ifndef STRING_H
 #define STRING_H
 
+#include <algorithm>
 #include <memory>
+#include <ostream>
 #include <utility>
 class String {
+friend std::ostream& operator<<(std::ostream &, const String &);
     public:
         String():String("") {}
         String(const char*);
@@ -17,6 +20,7 @@ class String {
 
         String(String &&) noexcept;
         String &operator=(String &&) noexcept;
+
     private:
         std::pair<char*, char*> alloc_n_copy(const char*, const char*);
         void range_initialize(const char*, const char*);
@@ -28,5 +32,11 @@ class String {
 
 };
 
+inline std::ostream& operator<<(std::ostream &os, const String &s) {
+        char *c = const_cast<char*>(s.c_str());
+        while(*c)
+                os << *c++;
+        return os;
+}
 
 #endif

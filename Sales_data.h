@@ -36,7 +36,7 @@ public:
     Sales_data& combine(const Sales_data&);
 
     Sales_data& operator+=(const Sales_data &);
-
+    Sales_data& operator=(const Sales_data &);
 
 private:
 

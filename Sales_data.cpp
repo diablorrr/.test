@@ -1,6 +1,7 @@
 #include "Sales_data.h"
 #include <iostream>
 
+
 using std::endl;
 
 Sales_data& Sales_data::combine(const Sales_data& rhs) {
@@ -45,7 +46,12 @@ ostream& operator<<(ostream &os, const Sales_data& sd) {
 }
 
 istream& operator>>(istream &is, Sales_data &sd) {
+    double price;
     is >> sd.bookNo >> sd.units_sold >> sd.revenue;
+    if (is)
+        sd.revenue = sd.units_sold * price;
+    else
+        sd = Sales_data();
     return is;
 }
 
@@ -53,4 +59,9 @@ Sales_data operator+(const Sales_data &sd1, const Sales_data&sd2) {
     Sales_data sum = sd1;
     sum += sd2;
     return sum;
+}
+
+Sales_data& Sales_data::operator=(const std::string &isbn) {
+    *this = Sales_data(isbn);
+    return *this;
 }

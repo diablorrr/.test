@@ -1,6 +1,8 @@
 #ifndef STRVEC_H
 #define STRVEC_H
 
+#include <cstddef>
+#include <initializer_list>
 #include <memory>
 #include <string>
 
@@ -13,8 +15,12 @@ public:
 	StrVec& operator=(const StrVec&);
 	~StrVec();
 
-  StrVec(StrVec &&) noexcept;
-  StrVec& operator=(StrVec &&) noexcept;
+    StrVec(StrVec &&) noexcept;
+    StrVec& operator=(StrVec &&) noexcept;
+
+	StrVec& operator=(std::initializer_list<std::string>);
+	std::string& operator[](std::size_t);
+	const std::string& operator[](std::size_t) const;
 
 	void push_back(const std::string&);
 	size_t size() const { return first_free - elements; }

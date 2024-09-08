@@ -1,11 +1,13 @@
 #ifndef STRBLOB_H
 #define STRBLOB_H
 
+#include <cstddef>
 #include <vector>
 #include <string>
 #include <initializer_list>
 #include <memory>
 #include <exception>
+#include <stdexcept>
 
 
 using std::vector;
@@ -77,6 +79,36 @@ ConstStrBlobPtr() :curr(0) {}
         ++curr;
         return *this;
     }
+
+        ConstStrBlobPtr& operator++() {
+            ++curr;
+            return *this;
+        }
+        ConstStrBlobPtr& operator++(int) {
+            ConstStrBlobPtr ret = *this;
+            ++*this;
+            return *this;
+        }
+    ConstStrBlobPtr& operator--();
+    ConstStrBlobPtr& operator--(int);
+    ConstStrBlobPtr operator+(size_t n) const{
+        size_t curr = curr + n;
+        return *this;
+    }
+    ConstStrBlobPtr operator-(size_t &n) {
+        size_t curr = curr - n;
+        return *this;
+    }
+    string& operator*() const{
+        auto ret = wptr.lock();
+        if (ret)
+            return (*ret)[curr];
+        else
+            throw std::runtime_error("no");
+    }
+    string* operator->() {
+        return &this->operator*();
+    }
 private:
     std::shared_ptr<vector<string>> check(size_t i, const string &msg) const {
         auto ret = wptr.lock();
@@ -88,14 +120,14 @@ private:
     size_t curr;
 };
 
-ConstStrBlobPtr StrBlob::begin() const
+inline ConstStrBlobPtr StrBlob::begin() const
 {
     return ConstStrBlobPtr(*this);
 }
-ConstStrBlobPtr StrBlob::end() const {
+inline ConstStrBlobPtr StrBlob::end() const {
     return ConstStrBlobPtr(*this, data->size());
 }
-StrBlob& StrBlob::operator=(const StrBlob &sb) {
+inline StrBlob& StrBlob::operator=(const StrBlob &sb) {
     data = std::make_shared<vector<string>>(*sb.data);
     return *this;
 }

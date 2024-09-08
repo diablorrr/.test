@@ -91,3 +91,20 @@ StrVec& StrVec::operator=(StrVec &&rhs) noexcept {
     }
     return *this;
 }
+
+
+StrVec& StrVec::operator=(std::initializer_list<std::string> il) {
+    auto data = alloc_n_copy(il.begin(), il.end());
+    free();
+    elements = data.first;
+    return *this;
+}
+
+
+std::string& StrVec::operator[](std::size_t n) {
+    return elements[n];
+}
+
+const std::string& StrVec::operator[](std::size_t n) const {
+    return *(elements + n);
+}
