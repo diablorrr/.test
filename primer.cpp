@@ -38,7 +38,6 @@ class check {
 
 
 
-
 int main()
 {
 	vector<int> vec = {3, 2, 1, 4, 3, 7, 8, 6};
